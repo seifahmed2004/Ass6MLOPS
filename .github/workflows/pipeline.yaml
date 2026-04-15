@@ -55,7 +55,6 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run training
-        id: training_step
         run: |
           mkdir -p logs
           echo "Starting expensive training job..."
