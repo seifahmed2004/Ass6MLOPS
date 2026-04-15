@@ -1,7 +1,5 @@
-import time
-
 print("Training started...")
 
-time.sleep(3)
+raise Exception("Intentional failure for testing artifact")
 
-raise Exception("Test failure")
+print("This line will never run")
