@@ -9,6 +9,7 @@ jobs:
   linter:
     name: Linter
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,6 +39,7 @@ jobs:
         github.ref == 'refs/heads/main' &&
         contains(github.event.head_commit.message, '[run-train]')
       }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,9 +55,11 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run training
+        id: training_step
         run: |
           mkdir -p logs
           echo "Starting expensive training job..."
+          set -o pipefail
           python train.py 2>&1 | tee logs/train_output.log
 
       - name: Create error_logs.txt on failure
@@ -76,7 +80,7 @@ jobs:
             fi
           } > error_logs.txt
 
-      - name: Upload error_logs artifact
+      - name: Upload error logs artifact
         if: failure()
         uses: actions/upload-artifact@v4
         with:
